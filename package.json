@@ -1,0 +1,26 @@
+{
+  "name": "burg-o-rama",
+  "version": "1.0.0",
+  "description": "Build a burg-o-rama application for GA classwork",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/douglaswissett/burg-o-rama.git"
+  },
+  "author": "Douglas Wissett Walker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/douglaswissett/burg-o-rama/issues"
+  },
+  "homepage": "https://github.com/douglaswissett/burg-o-rama#readme",
+  "dependencies": {
+    "dotenv": "^2.0.0",
+    "express": "^4.13.4",
+    "morgan": "^1.7.0",
+    "path": "^0.12.7"
+  }
+}

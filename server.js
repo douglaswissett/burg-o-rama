@@ -40,6 +40,24 @@ app.get('/burgers/:id/edit', dumpMethod)
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> f714ae0f34e89813a45d9e3d15ccaa515b618345
 var port = process.env.PORT || 3000;
 app.listen(port,()=> 
   console.log('Server Up! Ready to serve piping hot burgers on port', port,'//', new Date())
