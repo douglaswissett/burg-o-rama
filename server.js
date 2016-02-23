@@ -13,6 +13,8 @@ app.use( bodyParser.urlencoded({ extended: false }));
 app.use( bodyParser.json()); 
 app.use(methodOverride('_method'));
 
+/*Views*/
+app.set('view engine', 'ejs');
 
 var dumpMethod = (req,res)=>res.send( req.method + " burgers!" );
 // ROUTES
