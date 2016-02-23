@@ -43,17 +43,17 @@ burgers.route('/:id')
   }
 
   burgerData[bID] = req.body;
-  res.redirect('/burgers/' + bID);
+  res.redirect(303,'/burgers/' + bID);
 })
 .delete( (req, res) => {
   var bID = req.params.id;
   if(!(bID in burgerData)) {
-    res.redirect('/burgers/');
+    res.redirect(303,'/burgers/');
     return;
   }
 
   burgerData.splice(bID, 1);
-  res.redirect('/burgers/');
+  res.redirect(303,'/burgers/');
 })
 
 // SHOW NEW BURGER FORM
