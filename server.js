@@ -16,11 +16,11 @@ app.use(methodOverride('_method'));
 /*Views*/
 app.set('view engine', 'ejs');
 
-var dumpMethod = (req,res)=>res.send( req.method + " burgers!" );
-// ROUTES
+app.use( express.static( path.join( __dirname, 'public' )));
 
-// HOMEPAGE
-app.get('/', dumpMethod);
+
+// home route
+app.get('/', (req,res)=>res.render('pages/home', {homeTitle: 'Welcome to Burg-O-Rama'}))
 
 
 // BURGERS ROUTES FILE
