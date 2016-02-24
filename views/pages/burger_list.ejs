@@ -20,17 +20,11 @@
       <div class="starter-template">
 
 
-        <% data.forEach((x) => { %>
-          <h1><%= x %></h1>
+        <% burgerData.forEach((x) => { %>
+          <h1><a href="/burgers/<%= x.orderid %>"><%= x.orderid %></a></h1>
         <% }) %>
 
       </div>
-
-
-
-
-
-
 
 
 

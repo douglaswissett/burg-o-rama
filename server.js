@@ -4,8 +4,9 @@ var logger         = require('morgan');
 var path           = require('path');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
-var app            = express();
+var db             = require('./db/pg');
 var burgerRoutes   = require( path.join(__dirname, '/routes/burgers')); // this references burger routes
+var app            = express();
 
 // log
 app.use( logger('dev') );
@@ -25,10 +26,6 @@ app.get('/', (req,res)=>res.render('pages/home', {homeTitle: 'Welcome to Burg-O-
 
 // BURGERS ROUTES FILE
 app.use( '/burgers', burgerRoutes);
-
-
-
-
 
 
 

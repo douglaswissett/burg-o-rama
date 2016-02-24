@@ -27,13 +27,7 @@
 
 
         <!-- Text input-->
-        <div class="form-group">
-          <label class="col-md-4 control-label" for="name">Burger Name</label>  
-          <div class="col-md-6">
-          <input id="name" name="name" type="text" placeholder="placeholder" class="form-control input-md" required="">
-          <span class="help-block">Please name your burger</span>  
-          </div>
-        </div>
+
 
         <!-- Select Basic -->
         <div class="form-group">
@@ -103,6 +97,8 @@
           </div>
           </div>
         </div>
+
+        <input type="hidden" name="orderid" value="<%= orderID %>">
 
         <!-- Button -->
         <div class="form-group">

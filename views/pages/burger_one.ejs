@@ -18,7 +18,26 @@
 
       <div class="starter-template">
 
-        <h1><%= data %></h1>
+
+        
+            <label>Order ID</label><br>
+            <h5><%= data.orderid %></h5>
+            <label>Temperature</label><br>
+            <h6><%= data.doneness %></h6>
+            <label>Meat</label><br>
+            <h6><%= data.meat_type %></h6>
+            <label>Bread</label>
+            <h6><%= data.bun_type %></h6>
+            <label>Cheeses</label><br>
+            <% for(var i in data.cheeses) { %>
+              <h6><%= data.cheeses[i] %></h6>
+            <% } %>
+            <label>Toppings</label><br>
+            <% for(var i in data.toppings) { %>
+              <h6><%= data.toppings[i] %></h6>
+            <% } %>
+        
+
 
 
       </div>

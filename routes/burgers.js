@@ -1,41 +1,40 @@
 'use strict'
 var express = require('express');
+var db      = require('../db/pg');
 var burgers = express.Router();
 
 
-var burgerData = [];
-
+//var burgerData = [];
 var dumpMethod = (req,res)=>res.send( req.method + " burgers!" )
 
 
 
 // SHOW BURGERS
 burgers.route('/')
-.get( (req,res) => {
+.get( db.showBurgers, (req,res) => {
   
   res.render('pages/burger_list', {
-    data: burgerData
+    burgerData: res.rows
   });
 })
 
-.post( (req, res) => {
-  burgerData.push(req.body);
+.post( db.addOrder,db.addCheese,db.addTopping, (req, res) => {
 
-  var newID = burgerData.length-1;
-  res.redirect('/burgers/' + newID);
+  res.redirect('/burgers/');
 });
 
 
 
 
 // SHOW NEW BURGER FORM
-burgers.get('/new', (req,res)=>
+burgers.get('/new', db.showBurgers, (req,res)=>
   res.render('pages/burger_edit', { 
     burgerForm:{ 
       title:'Create your Dream Burger',
       burgerURL:'/burgers/', 
       submitMethod:'post'
-    }
+    },
+    orderID: res.rows.length
   })
 )
 
@@ -45,35 +44,35 @@ burgers.get('/new', (req,res)=>
 
 // SINGLE BURGER
 burgers.route('/:id')
-.get( (req, res) => {
+.get( db.showBurgers, (req, res) => {
   var bID = req.params.id;
 
-  if(!(bID in burgerData)) {
-    res.sendStatus(404);
-    return;
-  }
-
-  res.render('pages/burger_one', { data: burgerData[bID] });
+  // if(!(bID in burgerData)) {
+  //   res.sendStatus(404);
+  //   return;
+  // }
+  console.log(res.rows[bID-1]);
+  res.render('pages/burger_one', { data: res.rows[bID-1] });
 })
 .put( (req, res) => {
   var bID = req.params.id;
   
-  if(!(bID in burgerData)) {
-    res.sendStatus(404);
-    return;
-  }
+  // if(!(bID in burgerData)) {
+  //   res.sendStatus(404);
+  //   return;
+  // }
 
-  burgerData[bID] = req.body;
-  res.redirect(303,'/burgers/' + bID);
+  //burgerData[bID] = req.body;
+  res.redirect(303,'/burgers/');
 })
 .delete( (req, res) => {
   var bID = req.params.id;
-  if(!(bID in burgerData)) {
-    res.redirect(303,'/burgers/');
-    return;
-  }
+  // if(!(bID in burgerData)) {
+  //   res.redirect(303,'/burgers/');
+  //   return;
+  // }
 
-  burgerData.splice(bID, 1);
+  //burgerData.splice(bID, 1);
   res.redirect(303,'/burgers/');
 });
 
