@@ -97,7 +97,7 @@ order by justCheese.orderid`,
 
 function addOrder(req, res, next) {
 
-  console.log(req.body.orderid);
+  // console.log(req.body.orderid);
 
   pg.connect(conString, function(err, client, done) {
 
@@ -117,14 +117,51 @@ function addOrder(req, res, next) {
   });
 }
 
-function addCheese(req, res, next) {
-  pg.connect(conString, function(err, client, done) {
 
+function buildStatement(rows, columns, table) {
+  var params = [];
+  var chunks = [];
+  var i, j, row, valuesClause;
+  for(i = 0; i < rows.length; i++) {
+    row = rows[i];
+    valuesClause = [];
+    for(j = 0; j < row.length; j++){
+      params.push(row[j]);
+      valuesClause.push('$' + params.length);
+    }
+    chunks.push('(' + valuesClause.join(', ') + ')');
+  }
+  return {
+    query: 'INSERT INTO ' + table + '( ' + columns.join(', ') + ' ) VALUES ' + chunks.join(', '),
+    values: params
+  };
+}
+
+
+function addCheese(req, res, next) {
+  var data = [];
+  console.log(req.body.cheeseid.length)
+  
+
+  if(req.body.cheeseid.length > 1) {
+    var data = [];
+    req.body.cheeseid.forEach(function(id) {
+      data.push([+(req.body.orderid), +(id)]);
+    })
+  } else {
+    data.push([+(req.body.orderid), +(req.body.cheeseid)]);
+  }
+
+
+  var statement = buildStatement(data, ['orderid', 'cheeseid'], 'order_cheese');
+
+  pg.connect(conString, function(err, client, done) {
     if(err) {
       return console.error('error fetching client from pool', err);
     }
-    client.query('INSERT INTO order_cheese (orderid, cheeseid) VALUES ($1, $2)',
-     [req.body.orderid , req.body.cheeseid ],
+
+    client.query( statement.query ,
+     statement.values,
      function(err, result) {
       done();
 
@@ -137,13 +174,29 @@ function addCheese(req, res, next) {
 }
 
 function addTopping(req, res, next) {
+  var data = [];
+  
+  if(req.body.toppingid.length > 1) {
+
+    req.body.toppingid.forEach(function(id) {
+      data.push([+(req.body.orderid), +(id)])
+    })
+  } else {
+    data.push([+(req.body.orderid), +(req.body.toppingid)])
+  }
+
+
+  var statement = buildStatement(data, ['orderid', 'toppingid'], 'order_topping');
+
   pg.connect(conString, function(err, client, done) {
 
     if(err) {
       return console.error('error fetching client from pool', err);
     }
-    client.query('INSERT INTO order_topping (orderid, toppingid) VALUES ($1, $2)',
-     [req.body.orderid , req.body.toppingid ],
+
+
+    client.query(statement.query,
+     statement.values,
      function(err, result) {
       done();
 
@@ -155,6 +208,10 @@ function addTopping(req, res, next) {
   });
 }
 
+
+function editOrder(req, res, next) {
+
+}
 
 
 

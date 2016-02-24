@@ -1,3 +1,18 @@
+/*
+  
+  TODO:
+
+  - edit burger
+  - delete burger
+  - login authentication
+  - none value for cheeses/toppings
+
+*/
+
+
+
+
+pry = require('pryjs')
 'use strict'
 var express        = require('express');
 var logger         = require('morgan');
