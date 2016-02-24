@@ -57,12 +57,12 @@ burgers.route('/:id')
   res.render('pages/burger_one', { data: res.rows[bID-1] });
 })
 
-.put( db.showBurgers, (req, res) => {
+.put( db.editOrder, db.addCheese, db.addTopping, (req, res) => {
   var bID = req.params.id;
   
-
-  var updateThis = req.body;
-  console.log(updateThis);
+  console.log(req.body);
+  //var updateThis = res.rows;
+  //console.log(res.rows);
 
   res.redirect(303,'/burgers/' + bID);
 })
@@ -84,16 +84,14 @@ burgers.get('/:id/edit', db.showAllBurgers, (req, res) => {
     return;
   }
 
-  //console.log(res.rows[bID-1]);
-
   res.render('pages/burger_edit', { 
     burgerForm:{ 
       title:'Edit your Dream Burger',
       burgerURL:'/burgers/'+ req.params.id+'?_method=PUT', 
       submitMethod:'post',
       type: 'edit',
-      orderID: res.rows[bID-1].orderid
     },
+    orderID: res.rows[bID-1].orderid
   })
 });
 

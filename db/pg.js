@@ -211,13 +211,32 @@ function addTopping(req, res, next) {
 
 function editOrder(req, res, next) {
 
+  var orderID = req.body.orderid;
+  console.log(orderID, req.body.meatid, req.body.breadid, req.body.temperature)
+
+  pg.connect(conString, function(err, client, done) {
+
+    if(err) {
+      return console.error('error fetching client from pool', err);
+    }
+    client.query('UPDATE orders as o SET meatid = $1, breadid = $2, doneness = $3 WHERE o.orderid = $4;',
+    [ req.body.meatid, req.body.breadid, req.body.temperature, orderID ],
+     function(err, result) {
+      done();
+
+      if(err) {
+        return console.error('error running query', err);
+      }
+      next();
+    });
+  });
 }
 
-
-
+    
 
 module.exports.showBurgers    = showBurgers;
 module.exports.showAllBurgers = showAllBurgers;
 module.exports.addOrder       = addOrder;
 module.exports.addCheese      = addCheese;
 module.exports.addTopping     = addTopping;
+module.exports.editOrder      = editOrder;
