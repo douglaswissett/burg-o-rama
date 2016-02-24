@@ -5,3 +5,25 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+
+.list-inline {
+  display: inline;
+  padding: 50px;
+}
+
+.wrapper {
+  border: 10px solid #899898;
+  width: 470px;
+  margin-top: 50px;
+}
+
+.inner-orderbox {
+  display: inline-block;
+  width: 107px;
+  height: 100px;
+  padding: 36px 0 0 3px;
+}
+
+.inner-orderbox h3 {
+  font-weight: bold;
+}
