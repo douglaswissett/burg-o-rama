@@ -33,7 +33,8 @@ burgers.get('/new', db.showBurgers, (req,res)=>
     burgerForm:{ 
       title:'Create your Dream Burger',
       burgerURL:'/burgers/', 
-      submitMethod:'post'
+      submitMethod:'post',
+      type: 'new'
     },
     orderID: res.rows.length + 1
   })
@@ -52,25 +53,22 @@ burgers.route('/:id')
     res.sendStatus(404);
     return;
   }
-  console.log(res.rows[bID-1]);
+  //console.log(res.rows[bID-1]);
   res.render('pages/burger_one', { data: res.rows[bID-1] });
 })
-.put( (req, res) => {
+
+.put( db.showBurgers, (req, res) => {
   var bID = req.params.id;
   
-  if(!((bID-1) in burgerData)) {
-    res.sendStatus(404);
-    return;
-  }
 
-  res.redirect(303,'/burgers/');
+  var updateThis = req.body;
+  console.log(updateThis);
+
+  res.redirect(303,'/burgers/' + bID);
 })
+
 .delete( (req, res) => {
-  var bID = req.params.id;
-  // if(!(bID in burgerData)) {
-  //   res.redirect(303,'/burgers/');
-  //   return;
-  // }
+  //var bID = req.params.id;
 
   res.redirect(303,'/burgers/');
 });
@@ -78,20 +76,26 @@ burgers.route('/:id')
 
 
 // SHOW EDIT BURGER FORM
-burgers.get('/:id/edit', (req, res) => {
+burgers.get('/:id/edit', db.showAllBurgers, (req, res) => {
+  var bID = req.params.id;
+
+  if(!((bID-1) in res.rows)) {
+    res.sendStatus(404);
+    return;
+  }
+
+  //console.log(res.rows[bID-1]);
+
   res.render('pages/burger_edit', { 
     burgerForm:{ 
       title:'Edit your Dream Burger',
       burgerURL:'/burgers/'+ req.params.id+'?_method=PUT', 
-      submitMethod:'post'
-    }
+      submitMethod:'post',
+      type: 'edit',
+      orderID: res.rows[bID-1].orderid
+    },
   })
 });
-
-
-
-
-
 
 
 

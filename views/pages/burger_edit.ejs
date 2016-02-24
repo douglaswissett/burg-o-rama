@@ -21,6 +21,7 @@
 
       <div class="starter-template">
         <h1><%= burgerForm.title %></h1>
+        <h2><%= burgerForm.orderID %></h2>
         <p class="lead">Use this form to build a burger.</p>
         <form class="form-horizontal" action="<%= burgerForm.burgerURL %>" method="<%= burgerForm.submitMethod %>">
         <fieldset>
@@ -71,8 +72,8 @@
         </div>
 
         <!-- Select Basic -->
-        <div class="form-group">
-          <label class="col-md-4 control-label" for="cheese">Cheese</label>
+        
+<!--           <label class="col-md-4 control-label" for="cheese">Cheese</label>
           <div class="col-md-6">
             <select id="cheese" name="cheeseid" class="form-control">
               <option value="">None</option>
@@ -84,12 +85,53 @@
               <option value="6">Queso Blanco</option>
               <option value="7">Emmentaler</option>
             </select>
+          </div> -->
+        
+
+
+        <div class="form-group">
+          <label for="cheese">Cheese</label>
+          <div class="checkbox-div" id="cheese">
+            <div class="item">
+              <input type="checkbox" value="" name="cheeseid">
+              <p>None</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="1" name="cheeseid">
+              <p>Muenster</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="2" name="cheeseid">
+              <p>Swiss</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="3" name="cheeseid">
+              <p>Blue</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="4" name="cheeseid">
+              <p>American</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="5" name="cheeseid">
+              <p>Cheddar</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="6" name="cheeseid">
+              <p>Queso Blanco</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="7" name="cheeseid">
+              <p>Emmentaler</p>
+            </div>
           </div>
         </div>
 
+
+
         <!-- Multiple Checkboxes -->
         <!-- Select Basic -->
-        <div class="form-group">
+<!--         <div class="form-group">
           <label class="col-md-4 control-label" for="topping">Toppings</label>
           <div class="col-md-6">
             <select id="topping" name="toppingid" class="form-control">
@@ -100,11 +142,41 @@
               <option value="4">Lettuce</option>
             </select>
           </div>
+        </div> -->
+
+
+        <div class="form-group">
+          <label for="topping">Toppings</label>
+          <div class="checkbox-div" id="topping">
+            <div class="item">
+              <input type="checkbox" value="" name="toppingid">
+              <p>None</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="1" name="toppingid">
+              <p>Tomatoes</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="2" name="toppingid">
+              <p>Caramelized Onions</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="3" name="toppingid">
+              <p>Dijon Mustard</p>
+            </div>
+            <div class="item">
+              <input type="checkbox" value="4" name="toppingid">
+              <p>Lettuce</p>
+            </div>
+          </div>
         </div>
 
 
+
         <!-- orderid -->
-        <input type="hidden" name="orderid" value="<%= orderID %>">
+        <% if(burgerForm.type === 'new') { %>
+          <input type="hidden" name="orderid" value="<%= orderID %>">
+        <% } %>
 
 
         <!-- Button -->
