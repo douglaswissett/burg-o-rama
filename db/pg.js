@@ -32,6 +32,10 @@ function showAllBurgers(req, res, next) {
     if(err) {
       return console.error('error fetching client from pool', err);
     }
+
+ 
+/* complex query FROM: Jason Semiera / Max Rayman */
+
     client.query(`select
   orderid,
   doneness,
@@ -74,6 +78,7 @@ left join topping t using (toppingid)
 
 group by orderid, doneness, meat_type, bun_type, cheeses
 order by justCheese.orderid`,  
+
       function(err, result) {
       done();
 
