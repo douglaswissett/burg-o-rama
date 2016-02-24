@@ -4,8 +4,9 @@ var logger         = require('morgan');
 var path           = require('path');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
-var app            = express();
+var db             = require('./db/pg');
 var burgerRoutes   = require( path.join(__dirname, '/routes/burgers')); // this references burger routes
+var app            = express();
 
 // log
 app.use( logger('dev') );
@@ -39,11 +40,7 @@ app.use( '/burgers', burgerRoutes);
 
 
 
-
-
-
-
 var port = process.env.PORT || 3000;
-app.listen(port,()=> 
-  console.log('Server Up! Ready to serve piping hot burgers on port', port,'//', new Date())
-)
+app.listen(port,function() {
+  console.log('listening on ', port);
+} )
