@@ -17,13 +17,16 @@
     <div class="container">
 
 
-      <div class="starter-template">
-
-
-        <% burgerData.forEach((x) => { %>
-          <h1><a href="/burgers/<%= x.orderid %>"><%= x.orderid %></a></h1>
-        <% }) %>
-
+      <div class="wrapper">
+        
+        
+          <h2 style="padding: 20px 0 0 40px">Order Numbers</h2><br>
+          <% burgerData.forEach((x, index) => { %>
+          <div class="inner-orderbox">
+            <h3 class="list-inline"><a href="/burgers/<%= index + 1 %>"> <%= x.orderid %></a></h3>
+          </div>
+          <% }) %>
+  
       </div>
 
 

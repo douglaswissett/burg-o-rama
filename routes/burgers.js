@@ -4,10 +4,11 @@ var db      = require('../db/pg');
 var burgers = express.Router();
 
 
-//var burgerData = [];
-var dumpMethod = (req,res)=>res.send( req.method + " burgers!" )
 
 
+
+
+var dumpMethod = (req,res)=>res.send( req.method + " dump'd")
 
 // SHOW BURGERS
 burgers.route('/')
@@ -18,8 +19,8 @@ burgers.route('/')
   });
 })
 
+// CREATE new burger
 .post( db.addOrder,db.addCheese,db.addTopping, (req, res) => {
-
   res.redirect('/burgers/');
 });
 
@@ -34,7 +35,7 @@ burgers.get('/new', db.showBurgers, (req,res)=>
       burgerURL:'/burgers/', 
       submitMethod:'post'
     },
-    orderID: res.rows.length
+    orderID: res.rows.length + 1
   })
 )
 
@@ -44,25 +45,24 @@ burgers.get('/new', db.showBurgers, (req,res)=>
 
 // SINGLE BURGER
 burgers.route('/:id')
-.get( db.showBurgers, (req, res) => {
+.get( db.showAllBurgers, (req, res) => {
   var bID = req.params.id;
 
-  // if(!(bID in burgerData)) {
-  //   res.sendStatus(404);
-  //   return;
-  // }
+  if(!((bID -1) in res.rows)) {
+    res.sendStatus(404);
+    return;
+  }
   console.log(res.rows[bID-1]);
   res.render('pages/burger_one', { data: res.rows[bID-1] });
 })
 .put( (req, res) => {
   var bID = req.params.id;
   
-  // if(!(bID in burgerData)) {
-  //   res.sendStatus(404);
-  //   return;
-  // }
+  if(!((bID-1) in burgerData)) {
+    res.sendStatus(404);
+    return;
+  }
 
-  //burgerData[bID] = req.body;
   res.redirect(303,'/burgers/');
 })
 .delete( (req, res) => {
@@ -72,7 +72,6 @@ burgers.route('/:id')
   //   return;
   // }
 
-  //burgerData.splice(bID, 1);
   res.redirect(303,'/burgers/');
 });
 

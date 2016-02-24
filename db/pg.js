@@ -2,7 +2,32 @@ var pg = require('pg');
 var conString = "postgres://douglaswalker:dww1234@localhost/burgoramadb";
 
 
+
+
 function showBurgers(req, res, next) {
+  pg.connect(conString, function(err, client, done) {
+    if(err) {
+      return console.error('error fetching client from pool', err);
+    }
+    client.query('SELECT * FROM orders', function(err, result) {
+      done();
+
+      if(err) {
+        return console.error('error running query', err);
+      }
+
+      //console.log(result.rows);
+      res.rows = result.rows;
+      next();
+    });
+  });
+}
+
+
+
+
+
+function showAllBurgers(req, res, next) {
   pg.connect(conString, function(err, client, done) {
     if(err) {
       return console.error('error fetching client from pool', err);
@@ -55,8 +80,10 @@ order by justCheese.orderid`,
       if(err) {
         return console.error('error running query', err);
       }
-      res.rows = result.rows;
 
+
+      res.rows = result.rows;
+      //console.log(res.rows);
       next();
     });
   });  
@@ -65,7 +92,7 @@ order by justCheese.orderid`,
 
 function addOrder(req, res, next) {
 
-  console.log(req.body);
+  console.log(req.body.orderid);
 
   pg.connect(conString, function(err, client, done) {
 
@@ -73,7 +100,7 @@ function addOrder(req, res, next) {
       return console.error('error fetching client from pool', err);
     }
     client.query('INSERT INTO orders (meatid, breadid, doneness) VALUES ($1, $2, $3)',
-     [2,2,'Medium Test'],
+     [req.body.meatid, req.body.breadid, req.body.temperature],
      function(err, result) {
       done();
 
@@ -92,7 +119,7 @@ function addCheese(req, res, next) {
       return console.error('error fetching client from pool', err);
     }
     client.query('INSERT INTO order_cheese (orderid, cheeseid) VALUES ($1, $2)',
-     [2,2],
+     [req.body.orderid , req.body.cheeseid ],
      function(err, result) {
       done();
 
@@ -111,7 +138,7 @@ function addTopping(req, res, next) {
       return console.error('error fetching client from pool', err);
     }
     client.query('INSERT INTO order_topping (orderid, toppingid) VALUES ($1, $2)',
-     [3,4],
+     [req.body.orderid , req.body.toppingid ],
      function(err, result) {
       done();
 
@@ -127,7 +154,8 @@ function addTopping(req, res, next) {
 
 
 
-module.exports.showBurgers = showBurgers;
-module.exports.addOrder    = addOrder;
-module.exports.addCheese   = addCheese;
-module.exports.addTopping  = addTopping;
+module.exports.showBurgers    = showBurgers;
+module.exports.showAllBurgers = showAllBurgers;
+module.exports.addOrder       = addOrder;
+module.exports.addCheese      = addCheese;
+module.exports.addTopping     = addTopping;
