@@ -67,8 +67,8 @@ burgers.route('/:id')
   res.redirect(303,'/burgers/' + bID);
 })
 
-.delete( (req, res) => {
-  //var bID = req.params.id;
+.delete( db.deleteBurger, (req, res) => {
+  console.log('DELETED!', req.body.orderid);
 
   res.redirect(303,'/burgers/');
 });

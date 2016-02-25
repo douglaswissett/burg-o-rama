@@ -41,8 +41,8 @@ CREATE TABLE bread (
 
 CREATE TABLE orders (
   orderid SERIAL UNIQUE PRIMARY KEY,
-  meatid INT REFERENCES meat(meatid),
-  breadid INT REFERENCES bread(breadid),
+  meatid INT REFERENCES meat(meatid) ON DELETE CASCADE,
+  breadid INT REFERENCES bread(breadid) ON DELETE CASCADE,
   doneness text NOT NULL
 );
 
@@ -53,11 +53,11 @@ CREATE TABLE orders (
 -- JOIN TABLES
 
 CREATE TABLE order_cheese (
-  orderid INT REFERENCES orders(orderid),
-  cheeseid INT REFERENCES cheese(cheeseid)
+  orderid INT REFERENCES orders(orderid) ON DELETE CASCADE,
+  cheeseid INT REFERENCES cheese(cheeseid) ON DELETE CASCADE
 );
 
 CREATE TABLE order_topping (
-  orderid INT REFERENCES orders(orderid),
-  toppingid INT REFERENCES topping(toppingid)
+  orderid INT REFERENCES orders(orderid) ON DELETE CASCADE,
+  toppingid INT REFERENCES topping(toppingid) ON DELETE CASCADE
 );

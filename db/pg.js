@@ -141,19 +141,17 @@ function buildStatement(rows, columns, table) {
 function addCheese(req, res, next) {
   var data = [];
   
-  // guarded if no cheese is selected
-  if(!req.body.cheeseid) {
-    res.redirect('/burgers/' + req.body.orderid);
-    return;
-  }
-
-  if(!(typeof(req.body.cheeseid) === 'string')) {
-    var data = [];
-    req.body.cheeseid.forEach(function(id) {
-      data.push([+(req.body.orderid), +(id)]);
-    })
+  if((!req.body.cheeseid)) {
+    data.push([+(req.body.orderid), 8]);
   } else {
-    data.push([+(req.body.orderid), +(req.body.cheeseid)]);
+    if(!(typeof(req.body.cheeseid) === 'string')) {
+      var data = [];
+      req.body.cheeseid.forEach(function(id) {
+        data.push([+(req.body.orderid), +(id)]);
+      })
+    } else {
+      data.push([+(req.body.orderid), +(req.body.cheeseid)]);
+    }
   }
 
 
@@ -180,18 +178,17 @@ function addCheese(req, res, next) {
 function addTopping(req, res, next) {
   var data = [];
   
-  if(!req.body.toppingid) {
-    res.redirect('/burgers/' + req.body.orderid);
-    return;
-  }
-
-  if(!(typeof(req.body.toppingid) === 'string')) {
-    var data = [];
-    req.body.toppingid.forEach(function(id) {
-      data.push([+(req.body.orderid), +(id)]);
-    })
+  if((!req.body.toppingid)) {
+    data.push([+(req.body.orderid), 17]);
   } else {
-    data.push([+(req.body.orderid), +(req.body.toppingid)]);
+    if(!(typeof(req.body.toppingid) === 'string')) {
+      var data = [];
+      req.body.toppingid.forEach(function(id) {
+        data.push([+(req.body.orderid), +(id)]);
+      })
+    } else {
+      data.push([+(req.body.orderid), +(req.body.toppingid)]);
+    }   
   }
 
 
@@ -241,6 +238,26 @@ function editOrder(req, res, next) {
   });
 }
 
+function deleteBurger(req, res, next) {
+  var orderID = req.body.orderid;
+
+  pg.connect(conString, function(err, client, done) {
+    if(err) {
+      return console.error('error fetching client from pool', err);
+    }
+    client.query('DELETE FROM orders WHERE orderid =' + orderID +'',
+     function(err, result) {
+      done();
+
+      if(err) {
+        return console.error('error running query', err);
+      }
+      next();
+    });
+  });
+}
+
+
     
 
 module.exports.showBurgers    = showBurgers;
@@ -249,3 +266,4 @@ module.exports.addOrder       = addOrder;
 module.exports.addCheese      = addCheese;
 module.exports.addTopping     = addTopping;
 module.exports.editOrder      = editOrder;
+module.exports.deleteBurger   = deleteBurger;

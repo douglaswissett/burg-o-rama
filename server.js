@@ -3,7 +3,7 @@
   TODO:
 
   - edit burger          - Implemented, can ONLY add extras not Modify
-  - delete burger       
+  - delete burger        - added
   - login authentication
   - none value for cheeses/toppings    - fixed
 
