@@ -1,3 +1,18 @@
+/*
+  
+  TODO:
+
+  - edit burger          - Implemented, can ONLY add extras not Modify
+  - delete burger        - added
+  - login authentication
+  - none value for cheeses/toppings    - fixed
+
+*/
+
+
+
+
+pry = require('pryjs')
 'use strict'
 var express        = require('express');
 var logger         = require('morgan');

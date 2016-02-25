@@ -38,7 +38,16 @@
             <% } %>
         
 
+        <div>
+          <h3><a href="/burgers/<%= data.orderid %>/edit">Edit</a></h3>
+        </div>
 
+        <div>
+          <form method="POST" action="/burgers/<%= data.orderid + '?_method=DELETE' %>">
+            <input type="hidden" name="orderid" value="<%= data.orderid %>">
+            <button type="submit" class="btn btn-danger deleteBtn2">Delete</button>
+          </form>
+        </div>
 
       </div>
 

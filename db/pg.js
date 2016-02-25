@@ -97,7 +97,7 @@ order by justCheese.orderid`,
 
 function addOrder(req, res, next) {
 
-  console.log(req.body.orderid);
+  // console.log(req.body.orderid);
 
   pg.connect(conString, function(err, client, done) {
 
@@ -117,14 +117,53 @@ function addOrder(req, res, next) {
   });
 }
 
-function addCheese(req, res, next) {
-  pg.connect(conString, function(err, client, done) {
 
+function buildStatement(rows, columns, table) {
+  var params = [];
+  var chunks = [];
+  var i, j, row, valuesClause;
+  for(i = 0; i < rows.length; i++) {
+    row = rows[i];
+    valuesClause = [];
+    for(j = 0; j < row.length; j++){
+      params.push(row[j]);
+      valuesClause.push('$' + params.length);
+    }
+    chunks.push('(' + valuesClause.join(', ') + ')');
+  }
+  return {
+    query: 'INSERT INTO ' + table + '( ' + columns.join(', ') + ' ) VALUES ' + chunks.join(', '),
+    values: params
+  };
+}
+
+
+function addCheese(req, res, next) {
+  var data = [];
+  
+  if((!req.body.cheeseid)) {
+    data.push([+(req.body.orderid), 8]);
+  } else {
+    if(!(typeof(req.body.cheeseid) === 'string')) {
+      var data = [];
+      req.body.cheeseid.forEach(function(id) {
+        data.push([+(req.body.orderid), +(id)]);
+      })
+    } else {
+      data.push([+(req.body.orderid), +(req.body.cheeseid)]);
+    }
+  }
+
+
+  var statement = buildStatement(data, ['orderid', 'cheeseid'], 'order_cheese');
+
+  pg.connect(conString, function(err, client, done) {
     if(err) {
       return console.error('error fetching client from pool', err);
     }
-    client.query('INSERT INTO order_cheese (orderid, cheeseid) VALUES ($1, $2)',
-     [req.body.orderid , req.body.cheeseid ],
+
+    client.query( statement.query ,
+     statement.values,
      function(err, result) {
       done();
 
@@ -137,13 +176,33 @@ function addCheese(req, res, next) {
 }
 
 function addTopping(req, res, next) {
+  var data = [];
+  
+  if((!req.body.toppingid)) {
+    data.push([+(req.body.orderid), 17]);
+  } else {
+    if(!(typeof(req.body.toppingid) === 'string')) {
+      var data = [];
+      req.body.toppingid.forEach(function(id) {
+        data.push([+(req.body.orderid), +(id)]);
+      })
+    } else {
+      data.push([+(req.body.orderid), +(req.body.toppingid)]);
+    }   
+  }
+
+
+  var statement = buildStatement(data, ['orderid', 'toppingid'], 'order_topping');
+
   pg.connect(conString, function(err, client, done) {
 
     if(err) {
       return console.error('error fetching client from pool', err);
     }
-    client.query('INSERT INTO order_topping (orderid, toppingid) VALUES ($1, $2)',
-     [req.body.orderid , req.body.toppingid ],
+
+
+    client.query(statement.query,
+     statement.values,
      function(err, result) {
       done();
 
@@ -156,11 +215,55 @@ function addTopping(req, res, next) {
 }
 
 
+function editOrder(req, res, next) {
+
+  var orderID = req.body.orderid;
+  console.log(orderID, req.body.meatid, req.body.breadid, req.body.temperature)
+
+  pg.connect(conString, function(err, client, done) {
+
+    if(err) {
+      return console.error('error fetching client from pool', err);
+    }
+    client.query('UPDATE orders as o SET meatid = $1, breadid = $2, doneness = $3 WHERE o.orderid = $4;',
+    [ req.body.meatid, req.body.breadid, req.body.temperature, orderID ],
+     function(err, result) {
+      done();
+
+      if(err) {
+        return console.error('error running query', err);
+      }
+      next();
+    });
+  });
+}
+
+function deleteBurger(req, res, next) {
+  var orderID = req.body.orderid;
+
+  pg.connect(conString, function(err, client, done) {
+    if(err) {
+      return console.error('error fetching client from pool', err);
+    }
+    client.query('DELETE FROM orders WHERE orderid =' + orderID +'',
+     function(err, result) {
+      done();
+
+      if(err) {
+        return console.error('error running query', err);
+      }
+      next();
+    });
+  });
+}
 
 
+    
 
 module.exports.showBurgers    = showBurgers;
 module.exports.showAllBurgers = showAllBurgers;
 module.exports.addOrder       = addOrder;
 module.exports.addCheese      = addCheese;
 module.exports.addTopping     = addTopping;
+module.exports.editOrder      = editOrder;
+module.exports.deleteBurger   = deleteBurger;
