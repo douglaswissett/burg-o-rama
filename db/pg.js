@@ -140,10 +140,14 @@ function buildStatement(rows, columns, table) {
 
 function addCheese(req, res, next) {
   var data = [];
-  console.log(req.body.cheeseid.length)
   
+  // guarded if no cheese is selected
+  if(!req.body.cheeseid) {
+    res.redirect('/burgers/' + req.body.orderid);
+    return;
+  }
 
-  if(req.body.cheeseid.length > 1) {
+  if(!(typeof(req.body.cheeseid) === 'string')) {
     var data = [];
     req.body.cheeseid.forEach(function(id) {
       data.push([+(req.body.orderid), +(id)]);
@@ -176,13 +180,18 @@ function addCheese(req, res, next) {
 function addTopping(req, res, next) {
   var data = [];
   
-  if(req.body.toppingid.length > 1) {
+  if(!req.body.toppingid) {
+    res.redirect('/burgers/' + req.body.orderid);
+    return;
+  }
 
+  if(!(typeof(req.body.toppingid) === 'string')) {
+    var data = [];
     req.body.toppingid.forEach(function(id) {
-      data.push([+(req.body.orderid), +(id)])
+      data.push([+(req.body.orderid), +(id)]);
     })
   } else {
-    data.push([+(req.body.orderid), +(req.body.toppingid)])
+    data.push([+(req.body.orderid), +(req.body.toppingid)]);
   }
 
 

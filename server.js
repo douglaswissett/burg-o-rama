@@ -5,7 +5,7 @@
   - edit burger          - Implemented, can ONLY add extras not Modify
   - delete burger       
   - login authentication
-  - none value for cheeses/toppings
+  - none value for cheeses/toppings    - fixed
 
 */
 
