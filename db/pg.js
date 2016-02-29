@@ -1,5 +1,5 @@
 var pg = require('pg');
-var conString = "postgres://douglaswalker:dww1234@localhost/burgoramadb";
+var conString = "postgres://douglaswalker:"+process.env.DB_PASS+"@localhost/burgoramadb";
 
 
 
